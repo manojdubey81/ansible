@@ -1,0 +1,4 @@
+- name: setup frontend component
+  hosts: localhost
+  roles:
+    - frontend
