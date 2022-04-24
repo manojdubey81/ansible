@@ -6,18 +6,19 @@
 - name: Download and Extract Frontend
   ansible.builtin.unarchive:
     src: https://github.com/roboshop-devops-project/frontend/archive/main.zip
-    dest: /temp
+    dest: /tmp
     remote_src: yes
 
 - name: Cleanup Old HTML Content
   ansible.builtin.file:
-    path: /user/share/nginx/html
+    path: /usr/share/nginx/html
     state: absent
 
 # Note: In src and dest, ending / is very important when you are copying directories
+
 - name: Copy the frontend content to nginx path
   ansible.builtin.copy:
     src: /tmp/frontend-main/static/
-    dest: /user/share/nginx/html/
+    dest: /usr/share/nginx/html/
     remote_src: yes
 
