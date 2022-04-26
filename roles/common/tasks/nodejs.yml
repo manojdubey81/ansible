@@ -9,7 +9,7 @@
 		state: installed
 
 - name: Add Application User
-  ansible.builtin.user:
+	ansible.builtin.user:
     name: roboshop
     comment: Roboshop Project Application User
 
