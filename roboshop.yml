@@ -1,5 +1,5 @@
-- name: setup frontend component
-  hosts: FRONTEND
+- name: Setup "{{role_name}}" Component
+  hosts: "{{hosts}}"
   become: yes
   roles:
-    - frontend
+    - "{{role_name}}"

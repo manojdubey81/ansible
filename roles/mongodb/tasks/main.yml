@@ -1,6 +1,6 @@
 - name: Copy MongoDB repo
   ansible.builtin.copy:
-    src: mongodb.epo
+    src: mongodb.repo
     dest: /etc/yum-repos.d/mongodb.repo
 
 - name: Install MongoDB
@@ -8,7 +8,7 @@
     name: mongodb-org
     state: installed
 
-# Update listener Address in file /etc/mondod.conf
+# Update listener Address in file /etc/mongod.conf
 - name: Update Mongodb configuration
   ansible.builtin.replace:
     path: /etc/mongod.conf
