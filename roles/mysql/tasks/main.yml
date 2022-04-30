@@ -1,0 +1,79 @@
+#Copy MySQL repo
+- name: Copy MySQL repo file
+  ansible.builtin.copy:
+    src: mysql.repo
+    dest: /etc/yum.repo.d/mysql.repo
+
+#Install MySQL Server
+- name: Install MYSQL Server
+  ansible.buitlin.yum:
+    name:
+      - mysql-community-server
+      - MYSQL-python
+    state: installed
+
+#Start MYSQL Service
+- name: Start MySQL Service
+  ansible.builtin.systemd:
+    name: mysqld
+    state: started
+    enables: yes
+
+#Check DB password and check for password (old) ignore errors to move to next roles
+- name: Chekc the DB password by colletion Information
+  community.mysql.mysql_info:
+    login_user: root
+    login_password: RoboShop@1
+    ignore_errors: yes
+    register: mysql_stat
+
+#Reset password block
+- name: Reset Password Block
+  when: mysql_stat.falied
+  block:
+    - name: Grab Default Password of MYSQL
+      ansible.buitlin.shell: grep 'temporary password' /var/log/mysqld.log | awk '{print $NF}'
+      register: DEFAULT_ROOT_PASSWORD
+
+    - name: Copy the SQL Password Reset file
+      ansible.buitlin.copy:
+        src: rootpass.sql
+        dest: /tmp/rootpass.sql
+
+    - name: Reset MySQL Password
+      ansible.buitlin.shell: mysql --connect-expired-password \
+                             -uroot -p"{{DEFAULT_ROOT_PASSWORD.stdout}}" </tmp/rootpass.sql
+
+- name: Check the validate password plugin is removed
+  ansible.builtin.shell: echo show plugin | mysql -uroot -pRoboShop@1 | grep validate_password
+  register: PLUGIN_INFO
+  ignore_errors: yes
+
+- name: Uninstall Password Validate Plugin
+  when: PLUGIN_INFO.rc == 0
+  block:
+    - name: Copy SQL file to uninstall plugin
+      ansible.builtin.copy:
+        src: pass-validate.sql
+        dest: /tmp/pass-validate.sql
+    - name: Uninstall Plugin
+      community.mysql.mysql_db:
+        state: import
+        name: all
+        target: /tmp/pass-validate.sql
+        login_user: root
+        login_password: RoboShop@1
+
+- name: Download and Extract MySQL
+  include_role:
+    name: common
+    tasks_from: download
+
+- name: Load Schema
+  community.mysql.mysql_db:
+    state: import
+    name: all
+    target: /tmp/mysql-main/shipping.sql
+    login_user: root
+    login_password: RoboShop@1
+
