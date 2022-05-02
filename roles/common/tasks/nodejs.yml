@@ -5,8 +5,8 @@
   ansible.builtin.yum:
     name:
       - nodejs
-	  - gcc-c++
-	state: installed
+      - gcc-c++
+    state: installed
 
 - name: Add Application User
   ansible.builtin.user:
@@ -16,12 +16,12 @@
 - name: Download and Extract {{COMPONENT}} Content
   include_roles:
     name: common
-	tasks_from: download
+  tasks_from: download
 
 - name: CleanUp Old Content
   ansible.builtin.file:
-	path: /home/roboshop/{{COMPONENT}}
-	state: absent
+    path: /home/roboshop/{{COMPONENT}}
+    state: absent
 
 - name: Copy App Content
   become_user: roboshop
