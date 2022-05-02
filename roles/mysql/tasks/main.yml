@@ -6,7 +6,7 @@
 
 #Install MySQL Server
 - name: Install MYSQL Server
-  ansible.buitlin.yum:
+  ansible.builtin.yum:
     name:
       - mysql-community-server
       - MYSQL-python
