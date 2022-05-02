@@ -26,8 +26,8 @@
 - name: Copy App Content
   become_user: roboshop
   ansible.builtin.copy:
-    dest: /home/roboshop/{{COMPONENT}}/
     src: /tmp/{{COMPONENT}}-main/
+    dest: /home/roboshop/{{COMPONENT}}/
     remote_src: yes
 
 - name: Install NodeJS Dependencies
