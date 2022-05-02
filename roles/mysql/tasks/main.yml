@@ -32,16 +32,16 @@
   when: mysql_stat.falied
   block:
     - name: Grab Default Password of MYSQL
-      ansible.buitlin.shell: grep 'temporary password' /var/log/mysqld.log | awk '{print $NF}'
+      ansible.builtin.shell: grep 'temporary password' /var/log/mysqld.log | awk '{print $NF}'
       register: DEFAULT_ROOT_PASSWORD
 
     - name: Copy the SQL Password Reset file
-      ansible.buitlin.copy:
+      ansible.builtin.copy:
         src: rootpass.sql
         dest: /tmp/rootpass.sql
 
     - name: Reset MySQL Password
-      ansible.buitlin.shell: mysql --connect-expired-password \
+      ansible.builtin.shell: mysql --connect-expired-password \
                              -uroot -p"{{DEFAULT_ROOT_PASSWORD.stdout}}" </tmp/rootpass.sql
 
 - name: Check the validate password plugin is removed
