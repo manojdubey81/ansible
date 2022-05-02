@@ -1,27 +1,27 @@
 - name: Configure YUM repos
-	ansible.builtin.shell: curl -fssL https://rpm.nodesource.com/setup.lts.x | bash -
+  ansible.builtin.shell: curl -fssL https://rpm.nodesource.com/setup.lts.x | bash -
 
 - name: Install NodeJS
-	ansible.builtin.yum:
-		name:
-			- nodejs
-			- gcc-c++
-		state: installed
+  ansible.builtin.yum:
+    name:
+      - nodejs
+	  - gcc-c++
+	state: installed
 
 - name: Add Application User
-	ansible.builtin.user:
+  ansible.builtin.user:
     name: roboshop
     comment: Roboshop Project Application User
 
 - name: Download and Extract {{COMPONENT}} Content
-	include_roles:
-		name: common
-		tasks_from: download
+  include_roles:
+    name: common
+	tasks_from: download
 
 - name: CleanUp Old Content
-	ansible.builtin.file:
-		path: /home/roboshop/{{COMPONENT}}
-		state: absent
+  ansible.builtin.file:
+	path: /home/roboshop/{{COMPONENT}}
+	state: absent
 
 - name: Copy App Content
   become_user: roboshop
