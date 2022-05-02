@@ -16,7 +16,7 @@
 - name: Download and Extract {{COMPONENT}} Content
   include_roles:
     name: common
-  tasks_from: download
+    tasks_from: download
 
 - name: CleanUp Old Content
   ansible.builtin.file:
