@@ -9,7 +9,7 @@
   ansible.builtin.yum:
     name:
       - mysql-community-server
-      - MYSQL-python
+      - MySQL-python
     state: installed
 
 #Start MYSQL Service
@@ -31,7 +31,7 @@
 - name: Reset Password Block
   when: mysql_stat.falied
   block:
-    - name: Grab Default Password of MYSQL
+    - name: Grab Default Password of MySQL
       ansible.builtin.shell: grep 'temporary password' /var/log/mysqld.log | awk '{print $NF}'
       register: DEFAULT_ROOT_PASSWORD
 
