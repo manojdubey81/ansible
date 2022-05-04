@@ -65,7 +65,7 @@
         login_password: RoboShop@1
 
 - name: Download and Extract MySQL
-  include_role:
+  ansible.builtin.include_role:
     name: common
     tasks_from: download
 
