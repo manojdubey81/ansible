@@ -2,6 +2,7 @@
   ansible.builtin.user:
     name: roboshop
     comment: RoboShop Project Application user
+  register: APP_USER_REGISTER
 
 - name: CleanUp Old Content
   ansible.builtin.file:
