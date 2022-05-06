@@ -3,8 +3,8 @@ Description = Catalogue Service
 [Service]
 User=roboshop
 # Need to replace localhost to ip/dns name of mongodb
-#Environment=MONGO_URL="localhost:27017/catalogue"
-Environment=MONGO_URL="172.31.30.178:27017/catalogue"
+#Environment=MONGO_URL="mongodb://localhost:27017/catalogue"
+Environment=MONGO_URL="mongodb://172.31.30.178:27017/catalogue"
 ExecStart=/bin/node /home/roboshop/catalogue/server/js
 SyslogIdentifier=catalogue
 
