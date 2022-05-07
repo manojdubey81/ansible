@@ -1,5 +1,5 @@
 - name: Configure YUM repos
-  ansible.builtin.shell: curl -fssL https://rpm.nodesource.com/setup.lts.x | bash -
+  ansible.builtin.shell: curl -fssL https://rpm.nodesource.com/setup_lts.x | bash -
 
 - name: Install NodeJS
   ansible.builtin.yum:
