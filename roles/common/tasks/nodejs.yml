@@ -16,7 +16,7 @@
 - name: Install NodeJS Dependencies
   community.general.npm:
     path: /home/roboshop/{{COMPONENT}}
-  become_user: yes
+  become_user: roboshop
 
 - name: Setup Systemd
   ansible.builtin.include_role:
