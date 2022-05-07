@@ -1,12 +1,12 @@
 #!/bin/bash
 
 if [ -z "$1" ]; then
-  echo -e '\e[32mPlease Select Component Name!!\e[0m'
+  echo -e '\e[32mPlease Select Component Name in first place!!\e[0m'
   exit 1
 fi
 
 if [ -z "$2" ]; then
-  echo -e '\e[34mProvide Instances Type like t2.micro etc..\e[0m'
+  echo -e '\e[32mProvide Instances Type in second place like t2.micro etc..\e[0m'
   exit 2
 fi
 
