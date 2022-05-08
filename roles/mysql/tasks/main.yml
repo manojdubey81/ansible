@@ -17,7 +17,7 @@
   ansible.builtin.systemd:
     name: mysqld
     state: started
-    enables: yes
+    enabled: yes
 
 #Check DB password and check for password (old) ignore errors to move to next roles
 - name: Chekc the DB password by colletion Information
