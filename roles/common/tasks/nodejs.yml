@@ -18,9 +18,6 @@
     path: /home/roboshop/{{COMPONENT}}
   become_user: roboshop
 
-- name: Install NPM
-  ansible.builtin.shell: yum install npm -y
-
 - name: Setup Systemd
   ansible.builtin.include_role:
     name: common
