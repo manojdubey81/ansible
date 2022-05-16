@@ -26,20 +26,18 @@ display_instance() {
                --filters "Name=instance-state-name,Values=running" "Name=tag:Name,Values=${COMPONENT}" \
                --output text | awk '{print$2}')
 
-  if [ ! -z "${PRIVATE_IP}" ]; then
+  if [ ! -z "${PUBLIC_IP}" ]; then
           echo  "  "
-          echo -e "\e[32mName = ${INST_NAME}\e[0m, \e[33m PublicIP = ${PUBLIC_IP}\e[0m, \e[34mPrivateIp = ${PRIVATE_IP}\e[0m"
+          echo -e "\e[34mName = ${INST_NAME}\e[0m, \e[33mPublicIP = ${PUBLIC_IP}\e[0m, \e[34mPrivateIp = ${PRIVATE_IP}\e[0m"
   fi
 }
 
 if [ "$1" == "all" ]; then
   echo  "  "
   echo -e "\e[33mAll application running instance are with below details:-\e[0m"
-  CNT=1
   for component in catalogue cart user shipping payment frontend mongodb mysql rabbitmq radis dispatch ; do
     COMPONENT=$component
     display_instance
-    CNT = CNT + 1
   done
   echo -e "---------------------------------------------------------------------------------\n"
   echo -e "Total ${CNT} Application are Running---------------------------------------------\n"

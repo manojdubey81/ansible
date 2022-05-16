@@ -33,7 +33,7 @@ PUBLIC_IP=$(aws ec2 describe-instances \
 if [ ! -z "${PRIVATE_IP}" ]; then
     echo  "  "
     echo -e "\e[33mThis Instance is already running, Please see below instance details:-\e[0m"
-    echo -e "\e[32mName = ${INST_NAME}\e[0m, \e[33mPublicIP = ${PUBLIC_IP}\e[0m, \e[34mPrivateIp = ${PRIVATE_IP}\e[0m"
+    echo -e "\e[34mName = ${INST_NAME}\e[0m, \e[33mPublicIP = ${PUBLIC_IP}\e[0m, \e[34mPrivateIp = ${PRIVATE_IP}\e[0m"
     echo -e "---------------------------------------------------------------------------------\n"
     exit 3
 else
@@ -75,7 +75,7 @@ create_ec2()  {
   if [ ! -z "${PRIVATE_IP}" ]; then
         echo  "  "
         echo -e "\e[33mThis Instance is already running, Please see below instance details:-\e[0m"
-        echo -e "\e[34mName Tag = ${INST_NAME}, PublicIP = ${PUBLIC_IP}, PrivateIp = ${PRIVATE_IP}\e[0m"
+        echo -e "\e[34mName = ${INST_NAME}\e[0m, \e[33mPublicIP = ${PUBLIC_IP}\e[0m, \e[34mPrivateIp = ${PRIVATE_IP}\e[0m"
         echo -e "---------------------------------------------------------------------------------\n"
     else
         echo  "  "
