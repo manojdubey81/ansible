@@ -24,13 +24,13 @@ PRIVATE_IP=$(aws ec2 describe-instances \
 
 if [ ! -z "${PRIVATE_IP}" ]; then
     echo  "  "
-    echo -e  "\e[33mInstance ${COMPONENT} is already exists, Please check your AWS Account!!\e[0m"
+    echo -e "\e[33mInstance ${COMPONENT} is already exists, Please check your AWS Account!!\e[0m"
     echo -e "\e[33mInstance ID = ${PRIVATE_IP}\e[0m"
     echo -e "----------------------------------------------------\n"
     exit 3
 else
     echo  "  "
-    echo -e  "\e[33mRequested Instance is ${COMPONENT}\e[0m"
+    echo -e "\e[33mRequested Instance is ${COMPONENT}\e[0m"
     echo -e "----------------------------------------------------\n"
 fi
 
