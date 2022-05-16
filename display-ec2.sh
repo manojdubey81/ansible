@@ -29,7 +29,6 @@ display_instance() {
   if [ ! -z "${PRIVATE_IP}" ]; then
           echo  "  "
           echo -e "\e[34mName Tag = ${INST_NAME}, PublicIP = ${PUBLIC_IP}, PrivateIp = ${PRIVATE_IP}\e[0m"
-          echo -e "---------------------------------------------------------------------------------\n"
   fi
 }
 
@@ -40,6 +39,7 @@ if [ "$1" == "all" ]; then
     COMPONENT=$component
     display_instance
   done
+  echo -e "---------------------------------------------------------------------------------\n"
 else
   echo  "  "
   echo -e "\e[33m${COMPONENT} running instance is with below details:-\e[0m"
