@@ -14,9 +14,13 @@ fi
 COMPONENT="$1"
 INST_TYPE="$2"
 
+#PRIVATE_IP=$(aws ec2 describe-instances \
+#        --filters "Name=tag:Name,Values=${COMPONENT}" \
+#        --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text)
+
 PRIVATE_IP=$(aws ec2 describe-instances \
-        --filters "Name=tag:Name,Values=${COMPONENT}" \
-        --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text)
+             --query "Reservations[*].Instances[*].{PrivateIP:PrivateIpAddress,Name:Tags[?Key=='Name']|[0].Value,Status:State.Name}" \
+             --filters "Name=instance-state-name,Values=running" "Name=tag:Name,Values=${COMPONENT}" --output text)
 
 if [ ! -z "${PRIVATE_IP}" ]; then
     echo  "  "
