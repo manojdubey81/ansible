@@ -28,7 +28,7 @@ display_instance() {
 
   if [ ! -z "${PRIVATE_IP}" ]; then
           echo  "  "
-          echo -e "\e[32mName = ${INST_NAME}e[0m", "e[33m PublicIP = ${PUBLIC_IP}e[0m", "e[34mPrivateIp = ${PRIVATE_IP}\e[0m"
+          echo -e "\e[32mName = ${INST_NAME}e[0m, e[33m PublicIP = ${PUBLIC_IP}e[0m, e[34mPrivateIp = ${PRIVATE_IP}\e[0m"
   fi
 }
 
