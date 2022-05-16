@@ -35,8 +35,8 @@ INST_NAME=$(aws ec2 describe-instances \
 
 if [ ! -z "${PRIVATE_IP}" ]; then
     echo  "  "
-    echo -e "\e[33mInstance ${COMPONENT} is already exists, Please check your AWS Account!!\e[0m"
-    echo -e "\e[33mName Tag = ${INST_NAME}, PublicIP = ${PUBLIC_IP}, PrivateIp = ${PRIVATE_IP}\e[0m"
+    echo -e "\e[33mThis Instance is already running, Please see below instance details:-\e[0m"
+    echo -e "\e[34mName Tag = ${INST_NAME}, PublicIP = ${PUBLIC_IP}, PrivateIp = ${PRIVATE_IP}\e[0m"
     echo -e "----------------------------------------------------\n"
     exit 3
 else
