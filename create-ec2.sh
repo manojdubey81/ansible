@@ -70,15 +70,19 @@ else
     echo -e "----------------------------------------------------\n"
 fi
 
-
 create_ec2()  {
   check_instance_existance
-  aws ec2 run-instances \
-        --image-id "${AMI_ID}" \
-        --instance-type "${INST_TYPE}" \
-        --security-group-ids "${SG_ID}" \
-        --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=${COMPONENT}}]" \
-        | jq
+  if [ ! -z "${PRIVATE_IP}" ]; then
+        echo  "  "
+        echo -e "\e[33mThis Instance is already running, Please see below instance details:-\e[0m"
+        echo -e "\e[34mName Tag = ${INST_NAME}, PublicIP = ${PUBLIC_IP}, PrivateIp = ${PRIVATE_IP}\e[0m"
+        echo -e "---------------------------------------------------------------------------------\n"
+    else
+        echo  "  "
+        echo -e "\e[33mRequested Instance is ${COMPONENT}\e[0m"
+        echo -e "----------------------------------------------------\n"
+        assign_ec2
+    fi
 }
 
 check_instance_existance(){
@@ -96,26 +100,23 @@ check_instance_existance(){
                --query "Reservations[*].Instances[*].{PublicIP:PublicIpAddress,Name:Tags[?Key=='Name']|[0].Value,Status:State.Name}" \
                --filters "Name=instance-state-name,Values=running" "Name=tag:Name,Values=${COMPONENT}" \
                --output text | awk '{print$2}')
-
-
-  if [ ! -z "${PRIVATE_IP}" ]; then
-      echo  "  "
-      echo -e "\e[33mThis Instance is already running, Please see below instance details:-\e[0m"
-      echo -e "\e[34mName Tag = ${INST_NAME}, PublicIP = ${PUBLIC_IP}, PrivateIp = ${PRIVATE_IP}\e[0m"
-      echo -e "---------------------------------------------------------------------------------\n"
-  else
-      echo  "  "
-      echo -e "\e[33mRequested Instance is ${COMPONENT}\e[0m"
-      echo -e "----------------------------------------------------\n"
-  fi
 }
+
+assign_ec2()  {
+  aws ec2 run-instances \
+        --image-id "${AMI_ID}" \
+        --instance-type "${INST_TYPE}" \
+        --security-group-ids "${SG_ID}" \
+        --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=${COMPONENT}}]" \
+        | jq
+}
+
 
 if [ "$1" == "all" ]; then
   for component in catalogue cart user shipping payment frontend mongodb mysql rabbitmq radis dispatch ; do
     COMPONENT=$component
-    check_instance_existance
     create_ec2
   done
 else
-  create_ec2
+  assign_ec2
 fi
