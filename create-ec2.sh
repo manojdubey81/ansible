@@ -33,7 +33,7 @@ fi
 #            | jq '.Reservations[].Instances[].PrivateIpAddress' \
 #            | sed -e 's/"//g')
 #
-echo "IPADDRESS : " "${IPADDRESS}"
+#echo "IPADDRESS : " "${IPADDRESS}"
 
 SG_ID=$(aws ec2 describe-security-groups \
           --filters Name=group-name,Values=allow-all-sgp \
