@@ -32,8 +32,8 @@ PUBLIC_IP=$(aws ec2 describe-instances \
 
 if [ ! -z "${PRIVATE_IP}" ]; then
     echo  "  "
-    echo -e "\e[33mThis Instance is already running, Please see below instance details:-\e[0m"
-    echo -e "\e[34mName = ${INST_NAME}\e[0m, \e[33mPublicIP = ${PUBLIC_IP}\e[0m, \e[34mPrivateIp = ${PRIVATE_IP}\e[0m"
+    echo -e "\e[31mThis Instance is already running, Please see below instance details:-\e[0m"
+    echo -e "\e[33mName = ${INST_NAME}\e[0m, \e[32mPublicIP = ${PUBLIC_IP}\e[0m, \e[33mPrivateIp = ${PRIVATE_IP}\e[0m"
     echo -e "---------------------------------------------------------------------------------\n"
     exit 3
 else
@@ -74,12 +74,12 @@ create_ec2()  {
   check_instance_existance
   if [ ! -z "${PRIVATE_IP}" ]; then
         echo  "  "
-        echo -e "\e[33mThis Instance is already running, Please see below instance details:-\e[0m"
-        echo -e "\e[34mName = ${INST_NAME}\e[0m, \e[33mPublicIP = ${PUBLIC_IP}\e[0m, \e[34mPrivateIp = ${PRIVATE_IP}\e[0m"
+        echo -e "\e[31mThis Instance is already running, Please see below instance details:-\e[0m"
+        echo -e "\e[33mName = ${INST_NAME}\e[0m, \e[32mPublicIP = ${PUBLIC_IP}\e[0m, \e[33mPrivateIp = ${PRIVATE_IP}\e[0m"
         echo -e "---------------------------------------------------------------------------------\n"
     else
         echo  "  "
-        echo -e "\e[33mInstance Creation Request is for ${COMPONENT} application\e[0m"
+        echo -e "\e[32mInstance Creation Request is for ${COMPONENT} application\e[0m"
         echo -e "---------------------------------------------------------------\n"
         assign_ec2
     fi
