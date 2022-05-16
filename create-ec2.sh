@@ -107,13 +107,14 @@ check_instance_existance(){
       echo  "  "
       echo -e "\e[33mRequested Instance is ${COMPONENT}\e[0m"
       echo -e "----------------------------------------------------\n"
+      create_ec2
   fi
 }
 
 if [ "$1" == "all" ]; then
   for component in catalogue cart user shipping payment frontend mongodb mysql rabbitmq radis dispatch ; do
     COMPONENT=$component
-    create_ec2
+    check_instance_existance
   done
 else
   create_ec2
