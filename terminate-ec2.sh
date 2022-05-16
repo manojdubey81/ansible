@@ -5,14 +5,13 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-
 COMPONENT="$1"
 
 terminate_instance() {
   INST_ID=$(aws ec2 describe-instances \
                --filters "Name=tag:Name,Values=${COMPONENT}" \
                --query "Reservations[*].Instances[*].InstanceId" \
-               --output text | jq)
+               --output text | sed -e 's/"//g')
 
   if [ ! -z "${INST_ID}" ]; then
           aws ec2 describe-instances --instance-ids ${INST_ID}
