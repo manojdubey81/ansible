@@ -12,7 +12,7 @@ terminate_instance() {
   INST_ID=$(aws ec2 describe-instances \
                --filters "Name=tag:Name,Values=${COMPONENT}" \
                --query "Reservations[*].Instances[*].InstanceId" \
-               --output text)
+               --output text | jq)
 
   if [ ! -z "${INST_ID}" ]; then
           aws ec2 describe-instances --instance-ids ${INST_ID}
