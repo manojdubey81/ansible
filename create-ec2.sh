@@ -29,10 +29,10 @@ else
     echo -e "----------------------------------------------------\n"
 fi
 
-IPADDRESS=$(aws ec2 describe-instances \
-            | jq '.Reservations[].Instances[].PrivateIpAddress' \
-            | sed -e 's/"//g')
-
+#IPADDRESS=$(aws ec2 describe-instances \
+#            | jq '.Reservations[].Instances[].PrivateIpAddress' \
+#            | sed -e 's/"//g')
+#
 echo "IPADDRESS : " "${IPADDRESS}"
 
 SG_ID=$(aws ec2 describe-security-groups \
