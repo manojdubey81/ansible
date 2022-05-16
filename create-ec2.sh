@@ -14,9 +14,10 @@ fi
 COMPONENT="$1"
 INST_TYPE="$2"
 
-#PRIVATE_IP=$(aws ec2 describe-instances \
-#        --filters "Name=tag:Name,Values=${COMPONENT}" \
-#        --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text)
+INST_NAME=$(aws ec2 describe-instances \
+             --query "Reservations[*].Instances[*].{PublicIP:PublicIpAddress,Name:Tags[?Key=='Name']|[0].Value,Status:State.Name}" \
+             --filters "Name=instance-state-name,Values=running" "Name=tag:Name,Values=${COMPONENT}" \
+             --output text | awk '{print$1}')
 
 PRIVATE_IP=$(aws ec2 describe-instances \
              --query "Reservations[*].Instances[*].{PrivateIP:PrivateIpAddress,Name:Tags[?Key=='Name']|[0].Value,Status:State.Name}" \
@@ -28,16 +29,12 @@ PUBLIC_IP=$(aws ec2 describe-instances \
              --filters "Name=instance-state-name,Values=running" "Name=tag:Name,Values=${COMPONENT}" \
              --output text | awk '{print$2}')
 
-INST_NAME=$(aws ec2 describe-instances \
-             --query "Reservations[*].Instances[*].{PublicIP:PublicIpAddress,Name:Tags[?Key=='Name']|[0].Value,Status:State.Name}" \
-             --filters "Name=instance-state-name,Values=running" "Name=tag:Name,Values=${COMPONENT}" \
-             --output text | awk '{print$1}')
 
 if [ ! -z "${PRIVATE_IP}" ]; then
     echo  "  "
     echo -e "\e[33mThis Instance is already running, Please see below instance details:-\e[0m"
     echo -e "\e[34mName Tag = ${INST_NAME}, PublicIP = ${PUBLIC_IP}, PrivateIp = ${PRIVATE_IP}\e[0m"
-    echo -e "----------------------------------------------------\n"
+    echo -e "---------------------------------------------------------------------------------\n"
     exit 3
 else
     echo  "  "
@@ -45,11 +42,7 @@ else
     echo -e "----------------------------------------------------\n"
 fi
 
-#IPADDRESS=$(aws ec2 describe-instances \
-#            | jq '.Reservations[].Instances[].PrivateIpAddress' \
-#            | sed -e 's/"//g')
-#
-#echo "IPADDRESS : " "${IPADDRESS}"
+
 
 SG_ID=$(aws ec2 describe-security-groups \
           --filters Name=group-name,Values=allow-all-sgp \
@@ -79,6 +72,7 @@ fi
 
 
 create_ec2()  {
+  check_instance_existance
   aws ec2 run-instances \
         --image-id "${AMI_ID}" \
         --instance-type "${INST_TYPE}" \
@@ -87,9 +81,34 @@ create_ec2()  {
         | jq
 }
 
+check_instance_existance(){
+  INST_NAME=$(aws ec2 describe-instances \
+               --query "Reservations[*].Instances[*].{PublicIP:PublicIpAddress,Name:Tags[?Key=='Name']|[0].Value,Status:State.Name}" \
+               --filters "Name=instance-state-name,Values=running" "Name=tag:Name,Values=${COMPONENT}" \
+               --output text | awk '{print$1}')
+
+  PRIVATE_IP=$(aws ec2 describe-instances \
+               --query "Reservations[*].Instances[*].{PrivateIP:PrivateIpAddress,Name:Tags[?Key=='Name']|[0].Value,Status:State.Name}" \
+               --filters "Name=instance-state-name,Values=running" "Name=tag:Name,Values=${COMPONENT}" \
+               --output text | awk '{print$2}')
+
+  PUBLIC_IP=$(aws ec2 describe-instances \
+               --query "Reservations[*].Instances[*].{PublicIP:PublicIpAddress,Name:Tags[?Key=='Name']|[0].Value,Status:State.Name}" \
+               --filters "Name=instance-state-name,Values=running" "Name=tag:Name,Values=${COMPONENT}" \
+               --output text | awk '{print$2}')
 
 
-
+  if [ ! -z "${PRIVATE_IP}" ]; then
+      echo  "  "
+      echo -e "\e[33mThis Instance is already running, Please see below instance details:-\e[0m"
+      echo -e "\e[34mName Tag = ${INST_NAME}, PublicIP = ${PUBLIC_IP}, PrivateIp = ${PRIVATE_IP}\e[0m"
+      echo -e "---------------------------------------------------------------------------------\n"
+  else
+      echo  "  "
+      echo -e "\e[33mRequested Instance is ${COMPONENT}\e[0m"
+      echo -e "----------------------------------------------------\n"
+  fi
+}
 
 if [ "$1" == "all" ]; then
   for component in catalogue cart user shipping payment frontend mongodb mysql rabbitmq radis dispatch ; do
