@@ -6,7 +6,7 @@ if [ -z "$1" ]; then
 fi
 
 if [ -z "$2" ]; then
-  echo -e '\e[32mProvide Instances Type in second occurrence in after component name\e[0  \e[33i.e. t2.micro etc..\e[0m'
+  echo -e '\e[32mProvide Instances Type in second occurrence in after component name\e[0m  \e[33mi.e. t2.micro etc..\e[0m'
   exit 2
 fi
 
