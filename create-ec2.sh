@@ -38,8 +38,8 @@ if [ ! -z "${PRIVATE_IP}" ]; then
     exit 3
 else
     echo  "  "
-    echo -e "\e[33mRequested Instance is ${COMPONENT}\e[0m"
-    echo -e "----------------------------------------------------\n"
+    echo -e "\e[33mInstance Creation Request is for ${COMPONENT} application\e[0m"
+    echo -e "---------------------------------------------------------------\n"
 fi
 
 
@@ -66,7 +66,7 @@ if [ -z "${AMI_ID}" ]; then
     echo -e "----------------------------------------------------\n"
     exit 5
 else
-    echo -e "\e[1;32mAMI ID = ${AMI_ID}\e[0m"
+    echo -e "\e[1;32mInstance is/are in AMI ID = ${AMI_ID}\e[0m"
     echo -e "----------------------------------------------------\n"
 fi
 
@@ -79,8 +79,8 @@ create_ec2()  {
         echo -e "---------------------------------------------------------------------------------\n"
     else
         echo  "  "
-        echo -e "\e[33mRequested Instance is ${COMPONENT}\e[0m"
-        echo -e "----------------------------------------------------\n"
+        echo -e "\e[33mInstance Creation Request is for ${COMPONENT} application\e[0m"
+        echo -e "---------------------------------------------------------------\n"
         assign_ec2
     fi
 }
@@ -140,7 +140,6 @@ display_instance() {
 
   if [ ! -z "${PRIVATE_IP}" ]; then
           echo  "  "
-          echo -e "\e[33mThis Instance is already running, Please see below instance details:-\e[0m"
           echo -e "\e[34mName Tag = ${INST_NAME}, PublicIP = ${PUBLIC_IP}, PrivateIp = ${PRIVATE_IP}\e[0m"
           echo -e "---------------------------------------------------------------------------------\n"
   fi
@@ -149,6 +148,8 @@ display_instance() {
 if [ "$1" == "all" ]; then
   for component in catalogue cart user shipping payment frontend mongodb mysql rabbitmq radis dispatch ; do
     COMPONENT=$component
+    echo  "  "
+    echo -e "\e[33mList of All running instance are below with instance details:-\e[0m"
     display_instance
   done
 fi
