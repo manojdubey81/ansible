@@ -136,7 +136,7 @@ display_instance() {
   PUBLIC_IP=$(aws ec2 describe-instances \
                --query "Reservations[*].Instances[*].{PublicIP:PublicIpAddress,Name:Tags[?Key=='Name']|[0].Value,Status:State.Name}" \
                --filters "Name=instance-state-name,Values=running" "Name=tag:Name,Values=${COMPONENT}" \
-               --output text | awk '{print$2}'
+               --output text | awk '{print$2}')
 
   if [ ! -z "${PRIVATE_IP}" ]; then
           echo  "  "
