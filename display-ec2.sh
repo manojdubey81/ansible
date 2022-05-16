@@ -28,18 +28,21 @@ display_instance() {
 
   if [ ! -z "${PRIVATE_IP}" ]; then
           echo  "  "
-          echo -e "\e[34mName Tag = ${INST_NAME}, PublicIP = ${PUBLIC_IP}, PrivateIp = ${PRIVATE_IP}\e[0m"
+          echo -e "\e[32mName = ${INST_NAME}e[0m, e[33m PublicIP = ${PUBLIC_IP}e[0m, e[34mPrivateIp = ${PRIVATE_IP}\e[0m"
   fi
 }
 
 if [ "$1" == "all" ]; then
   echo  "  "
   echo -e "\e[33mAll application running instance are with below details:-\e[0m"
+  CNT=1
   for component in catalogue cart user shipping payment frontend mongodb mysql rabbitmq radis dispatch ; do
     COMPONENT=$component
     display_instance
+    CNT++
   done
   echo -e "---------------------------------------------------------------------------------\n"
+  echo -e "Total ${CNT} Application are Running---------------------------------------------\n"
 else
   echo  "  "
   echo -e "\e[33m${COMPONENT} running instance is with below details:-\e[0m"
