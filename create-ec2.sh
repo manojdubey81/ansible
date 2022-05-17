@@ -108,7 +108,7 @@ assign_ec2()  {
         --instance-type "${INST_TYPE}" \
         --security-group-ids "${SG_ID}" \
         --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=${COMPONENT}}]" \
-        | jq. '.Instances[].PrivateIpAddress' | sed -e 's/"//g')
+        | jq '.Instances[].PrivateIpAddress' | sed -e 's/"//g')
 
   create_pvt_hzone
 
