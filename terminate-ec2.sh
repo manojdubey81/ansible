@@ -14,7 +14,7 @@ terminate_instance() {
                --output text)
 
   if [ ! -z "${INST_ID}" ]; then
-          aws ec2 describe-instances --instance-ids ${INST_ID}
+          aws ec2 terminate-instances --instance-ids ${INST_ID}
   fi
 }
 
