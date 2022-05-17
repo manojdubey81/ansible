@@ -84,7 +84,8 @@ else
     PVT_HOST_ZONE=$(aws route53 create-hosted-zone \
                   --name "roboshop.internal" \
                   --vpc VPCRegion="us-east-1",VPCId=${VPC_ID} \
-                  --caller-reference "$(date)")
+                  --caller-reference "$(date)" jq '.HostedZone.Id' | sed -e 's/"//g' | sed -e 's/\/hostedzone\// /')
+
     if [ -z "${PVT_HOST_ZONE}" ]; then
         echo -e "\e[1;31mPrivate Hosted Zone Creation Filed\e[0m"
         echo -e "-------------------------------------------\n"
