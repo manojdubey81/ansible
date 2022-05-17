@@ -78,6 +78,9 @@ if [ -z "${VPC_ID}" ]; then
     echo -e "----------------------------------------------------\n"
     exit 6
 else
+    echo -e "\e[1;32mVPC ID = ${VPC_ID}\e[0m"
+    echo -e "----------------------------------------------------\n"
+
     PVT_HOST_ZONE=$(aws route53 create-hosted-zone \
                   --name "roboshop.internal" \
                   --vpc VPCRegion="us-east-1",VPCId=${VPC_ID} \
@@ -86,6 +89,9 @@ else
         echo -e "\e[1;31mPrivate Hosted Zone Creation Filed\e[0m"
         echo -e "-------------------------------------------\n"
         exit 7
+    else
+        echo -e "\e[1;32mPrivate Hosted Zone ID = ${PVT_HOST_ZONE}\e[0m"
+        echo -e "----------------------------------------------------\n"
     fi
 fi
 
