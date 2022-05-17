@@ -13,7 +13,7 @@ PVT_HZ=$(aws route53 create-hosted-zone \
           --vpc VPCRegion="us-east-1",VPCId=${VPC_ID} \
           --caller-reference "$(date)")
 
-PVT_HOST_ZONE=$PVT_HZ.HostedZone.Id.replace("/hostedzone/"",")
+PVT_HOST_ZONE=$PVT_HZ.HostedZone.Id.replace("/hostedzone/","")
 
 
 echo "---------------------------------"
