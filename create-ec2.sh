@@ -70,6 +70,26 @@ else
     echo -e "----------------------------------------------------\n"
 fi
 
+
+VPC_ID=$(aws ec2 describe-vpcs | jq '.Vpcs[].VpcId' | sed -e 's/"//g')
+
+if [ -z "${VPC_ID}" ]; then
+    echo -e "\e[1;31mUnable to locate VPC ID\e[0m"
+    echo -e "----------------------------------------------------\n"
+    exit 6
+else
+    PVT_HOST_ZONE=$(aws route53 create-hosted-zone \
+                  --name "roboshop.internal" \
+                  --vpc VPCRegion="us-east-1",VPCId=${VPC_ID} \
+                  --caller-reference "$(date)")
+    if [ -z "${PVT_HOST_ZONE}" ]; then
+        echo -e "\e[1;31mPrivate Hosted Zone Creation Filed\e[0m"
+        echo -e "-------------------------------------------\n"
+        exit 7
+    fi
+fi
+
+
 create_ec2()  {
   check_instance_existance
   if [ ! -z "${PRIVATE_IP}" ]; then
@@ -110,19 +130,10 @@ assign_ec2()  {
         --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=${COMPONENT}}]" \
         | jq '.Instances[].PrivateIpAddress' | sed -e 's/"//g')
 
-  create_pvt_hzone
-
   sed -e "s/IPADDRESS/${PVT_IP}/" -e "s/COMPONENT/${COMPONENT}-dev/" route53.json >/tmp/record.json
   aws route53 change-resource-record-sets --hosted-zone-id ${PVT_HOST_ZONE} --change-batch file:///tmp/record.json | jq
 }
 
-create_pvt_hzone(){
-  VPC_ID=$(aws ec2 describe-vpcs | jq '.Vpcs[].VpcId' | sed -e 's/"//g')
-  PVT_HOST_ZONE=$(aws route53 create-hosted-zone \
-              --name "roboshop.internal" \
-              --vpc VPCRegion="us-east-1",VPCId=${VPC_ID} \
-              --caller-reference "$(date)")
-}
 
 if [ "$1" == "all" ]; then
   for component in catalogue cart user shipping payment frontend mongodb mysql rabbitmq redis dispatch ; do
