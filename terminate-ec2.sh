@@ -20,6 +20,7 @@ terminate_instance() {
   fi
 }
 
+
 if [ "$1" == "all" ]; then
   echo  "  "
   echo -e "\e[31mAll application termination started:-\e[0m"
