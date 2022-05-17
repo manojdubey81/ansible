@@ -26,6 +26,8 @@ display_instance() {
                --filters "Name=instance-state-name,Values=running" "Name=tag:Name,Values=${COMPONENT}" \
                --output text | awk '{print$2}')
 
+          echo ' ' > inv.txt
+
   if [ ! -z "${PUBLIC_IP}" ]; then
           echo  "  "
           echo -e "\e[33mName = ${INST_NAME}\e[0m, \e[32mPublicIP = ${PUBLIC_IP}\e[0m, \e[33mPrivateIp = ${PRIVATE_IP}\e[0m, \e[35mStatus = 'running'\e[0m"
