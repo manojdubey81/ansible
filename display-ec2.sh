@@ -29,7 +29,7 @@ display_instance() {
   if [ ! -z "${PUBLIC_IP}" ]; then
           echo  "  "
           echo -e "\e[33mName = ${INST_NAME}\e[0m, \e[32mPublicIP = ${PUBLIC_IP}\e[0m, \e[33mPrivateIp = ${PRIVATE_IP}\e[0m, \e[35mStatus = 'running'\e[0m"
-          INST_NAME_CAPS = ${INST_NAME} | tar [a-z] [A-Z]
+          INST_NAME_CAPS=$(echo ${INST_NAME} | tr [a-z] [A-Z])
           echo [${INST_NAME_CAPS}] >> inv.txt
           echo ${PRIVATE_IP} >> inv.txt
   else
