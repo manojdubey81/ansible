@@ -8,11 +8,13 @@ fi
 COMPONENT=$1
 
 VPC_ID=$(aws ec2 describe-vpcs | jq '.Vpcs[].VpcId' | sed -e 's/"//g')
-PVT_HOST_ZONE=$(aws route53 create-hosted-zone \
+PVT_HZ=$(aws route53 create-hosted-zone \
             --name "${COMPONENT}" \
             --vpc VPCRegion="us-east-1",VPCId=${VPC_ID} \
-            --caller-reference "$(date)" | jq '.HostedZone.Id' \
-            --output text)
+            --caller-reference "$(date)"
+
+PVT_HOST_ZONE=$PVT_HZ.HostedZone.Id.replace("/hostedzone/"",")
+
 
 echo "---------------------------------"
 echo "Pvt_hosted-zone :" "${PVT_HOST_ZONE}"
