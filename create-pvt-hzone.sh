@@ -18,4 +18,4 @@ PVT_HZ=$(aws route53 create-hosted-zone \
 
 
 echo "---------------------------------"
-#echo "Pvt_hosted-zone :" "${PVT_HOST_ZONE}"
+echo "Pvt_hosted-zone :" "${PVT_HZ}"
