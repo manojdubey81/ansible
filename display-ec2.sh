@@ -9,6 +9,7 @@ fi
 
 COMPONENT="$1"
 
+echo ' ' > inv.txt
 
 display_instance() {
   INST_NAME=$(aws ec2 describe-instances \
@@ -26,7 +27,6 @@ display_instance() {
                --filters "Name=instance-state-name,Values=running" "Name=tag:Name,Values=${COMPONENT}" \
                --output text | awk '{print$2}')
 
-          echo ' ' > inv.txt
 
   if [ ! -z "${PUBLIC_IP}" ]; then
           echo  "  "
