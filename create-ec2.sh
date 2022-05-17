@@ -103,14 +103,26 @@ check_instance_existance(){
 }
 
 assign_ec2()  {
-  aws ec2 run-instances \
+  PVT_IP=$(aws ec2 run-instances \
         --image-id "${AMI_ID}" \
         --instance-type "${INST_TYPE}" \
         --security-group-ids "${SG_ID}" \
         --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=${COMPONENT}}]" \
-        | jq
+        | jq. '.Instances[].PrivateIpAddress' | sed -e 's/"//g')
+
+  create_pvt_hzone
+
+  sed -e "s/IPADDRESS/${PVT_IP}/" -e "s/COMPONENT/${COMPONENT}-dev/" route53.json >/tmp/record.json
+  aws route53 change-resource-record-sets --hosted-zone-id ${PVT_HOST_ZONE} --change-batch file:///tmp/record.json | jq
 }
 
+create_pvt_hzone(){
+  VPC_ID=$(aws ec2 describe-vpcs | jq '.Vpcs[].VpcId' | sed -e 's/"//g')
+  PVT_HOST_ZONE=$(aws route53 create-hosted-zone \
+              --name "roboshop.internal" \
+              --vpc VPCRegion="us-east-1",VPCId=${VPC_ID} \
+              --caller-reference "$(date)")
+}
 
 if [ "$1" == "all" ]; then
   for component in catalogue cart user shipping payment frontend mongodb mysql rabbitmq redis dispatch ; do
