@@ -7,6 +7,8 @@ fi
 
 COMPONENT="$1"
 
+aws route53 delete-hosted-zone --id Z36KTIQEXAMPLE
+
 terminate_instance() {
   INST_ID=$(aws ec2 describe-instances \
                --filters "Name=tag:Name,Values=${COMPONENT}" \
