@@ -137,7 +137,7 @@ assign_ec2()  {
         --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=${COMPONENT}}]" \
         | jq '.Instances[].PrivateIpAddress' | sed -e 's/"//g')
 
-  sed -e "s/IPADDRESS/${PVT_IP}/" -e "s/COMPONENT/${COMPONENT}-dev/" -e "s/ACTION/UPSERT/"route53.json >/tmp/record.json
+  sed -e "s/IPADDRESS/${PVT_IP}/" -e "s/COMPONENT/${COMPONENT}-dev/" -e "s/ACTION/UPSERT/" route53.json >/tmp/record.json
   aws route53 change-resource-record-sets --hosted-zone-id ${PVT_HOST_ZONE} --change-batch file:///tmp/record.json | jq
 }
 
