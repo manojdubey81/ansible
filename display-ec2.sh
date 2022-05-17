@@ -9,7 +9,7 @@ fi
 
 COMPONENT="$1"
 
-echo ' ' > inv.txt
+echo ' ' > inv
 
 display_instance() {
   INST_NAME=$(aws ec2 describe-instances \
@@ -32,8 +32,8 @@ display_instance() {
           echo  "  "
           echo -e "\e[33mName = ${INST_NAME}\e[0m, \e[32mPublicIP = ${PUBLIC_IP}\e[0m, \e[33mPrivateIp = ${PRIVATE_IP}\e[0m, \e[35mStatus = 'running'\e[0m"
           INST_NAME_CAPS=$(echo ${INST_NAME} | tr [a-z] [A-Z])
-          echo [${INST_NAME_CAPS}] >> inv.txt
-          echo ${PRIVATE_IP} >> inv.txt
+          echo [${INST_NAME_CAPS}] >> inv
+          echo ${PRIVATE_IP} >> inv
   else
           echo -e "\e[32m${COMPONENT} application is not running at this time\e[0m"
   fi
