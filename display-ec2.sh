@@ -30,7 +30,7 @@ display_instance() {
           echo  "  "
           echo -e "\e[33mName = ${INST_NAME}\e[0m, \e[32mPublicIP = ${PUBLIC_IP}\e[0m, \e[33mPrivateIp = ${PRIVATE_IP}\e[0m"
   else
-          echo -e "\e[31m${COMPONENT} application's is not running at this time:-\e[0m"
+          echo -e "\e[32m${COMPONENT} application's is not running at this time\e[0m"
   fi
 }
 
