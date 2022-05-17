@@ -29,12 +29,14 @@ display_instance() {
   if [ ! -z "${PUBLIC_IP}" ]; then
           echo  "  "
           echo -e "\e[33mName = ${INST_NAME}\e[0m, \e[32mPublicIP = ${PUBLIC_IP}\e[0m, \e[33mPrivateIp = ${PRIVATE_IP}\e[0m"
+  else
+          echo -e "\e[31m${COMPONENT} application's is not running at this time:-\e[0m"
   fi
 }
 
 if [ "$1" == "all" ]; then
   echo  "  "
-  echo -e "\e[31mAll application running instance are with below details:-\e[0m"
+  echo -e "\e[31mAll application's running instance are with below details:-\e[0m"
   for component in catalogue cart user shipping payment frontend mongodb mysql rabbitmq radis dispatch ; do
     COMPONENT=$component
     display_instance
