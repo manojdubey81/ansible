@@ -20,11 +20,11 @@ terminate_instance() {
            --filters "Name=instance-state-name,Values=running" "Name=tag:Name,Values=${COMPONENT}" \
            --output text | awk '{print$2}')
 
-  if [ ! -z "${PVT_ID}" ]; then
+#  if [ ! -z "${PVT_ID}" ]; then
      sed -e "s/IPADDRESS/${PVT_IP}/" -e "s/COMPONENT/${COMPONENT}-dev/" -e "s/ACTION/DELETE/" route53.json >/tmp/record.json
      aws route53 change-resource-record-sets --hosted-zone-id ${PVT_HOST_ZONE} --change-batch file:///tmp/record.json | jq
-     echo $?
-  fi
+
+#  fi
 
   INST_ID=$(aws ec2 describe-instances \
                  --filters "Name=tag:Name,Values=${COMPONENT}" \
