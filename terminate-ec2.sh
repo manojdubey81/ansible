@@ -26,17 +26,7 @@ echo -e "----------------------------------------------------\n"
 
 terminate_instance() {
 
-  PVT_IP=$(aws ec2 describe-instances \
-           --query "Reservations[*].Instances[*].{PrivateIP:PrivateIpAddress,Name:Tags[?Key=='Name']|[0].Value,Status:State.Name}" \
-           --filters "Name=instance-state-name,Values=running" "Name=tag:Name,Values=${COMPONENT}" \
-           --output text | awk '{print$2}')
-
-  if [ -z "${PVT_ID}" ]; then
-     sed -e "s/IPADDRESS/${PVT_IP}/" -e "s/COMPONENT/${COMPONENT}-dev/" -e "s/ACTION/DELETE/" route53.json >/tmp/record.json
-     aws route53 change-resource-record-sets --hosted-zone-id ${PVT_HOST_ZONE} --change-batch file:///tmp/record.json | jq
-
-  fi
-
+  remove_A_rec
   INST_ID=$(aws ec2 describe-instances \
                  --filters "Name=tag:Name,Values=${COMPONENT}" \
                  --query "Reservations[*].Instances[*].InstanceId" \
@@ -47,6 +37,20 @@ terminate_instance() {
     fi
 }
 
+
+remove_A_rec() {
+
+  PVT_IP=$(aws ec2 describe-instances \
+             --query "Reservations[*].Instances[*].{PrivateIP:PrivateIpAddress,Name:Tags[?Key=='Name']|[0].Value,Status:State.Name}" \
+             --filters "Name=instance-state-name,Values=running" "Name=tag:Name,Values=${COMPONENT}" \
+             --output text | awk '{print$2}')
+
+    if [ -z "${PVT_ID}" ]; then
+       sed -e "s/IPADDRESS/${PVT_IP}/" -e "s/COMPONENT/${COMPONENT}-dev/" -e "s/ACTION/DELETE/" route53.json >/tmp/record.json
+       aws route53 change-resource-record-sets --hosted-zone-id ${PVT_HOST_ZONE} --change-batch file:///tmp/record.json | jq
+
+    fi
+}
 
 if [ "$1" == "all" ]; then
   echo  "  "
