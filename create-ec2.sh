@@ -1,4 +1,9 @@
 #!/bin/bash
+# This Script will create required application instance
+# If instance already running, the script will terminated and display the existance instance details
+# Also create a private hosted zone(roboshop.internal)
+# Insert "A" type record in private hosted zone
+
 
 if [ -z "$1" ]; then
   echo -e '\e[32mPlease Select Component Name in first occurrence in command line after script!!\e[0m'

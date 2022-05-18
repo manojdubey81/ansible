@@ -1,5 +1,5 @@
 {
-  "Comment": "ACTION COMPONENT A type record in Route53 (CREATE/DELETE/UPSERT)",
+  "Comment": "ACTION A type record in Route53 for COMPONENT",
   "Changes": [{
     "Action": "ACTION",
     "ResourceRecordSet": {
