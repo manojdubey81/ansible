@@ -23,6 +23,7 @@ terminate_instance() {
   if [ ! -z "${PVT_ID}" ]; then
      sed -e "s/IPADDRESS/${PVT_IP}/" -e "s/COMPONENT/${COMPONENT}-dev/" -e "s/ACTION/DELETE/" route53.json >/tmp/record.json
      aws route53 change-resource-record-sets --hosted-zone-id ${PVT_HOST_ZONE} --change-batch file:///tmp/record.json | jq
+     echo $?
   fi
 
   INST_ID=$(aws ec2 describe-instances \
