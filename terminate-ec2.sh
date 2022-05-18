@@ -32,9 +32,9 @@ terminate_instance() {
                  --query "Reservations[*].Instances[*].InstanceId" \
                  --output text)
 
-    if [ ! -z "${INST_ID}" ]; then
-            aws ec2 terminate-instances --instance-ids ${INST_ID} | jq
-    fi
+  if [ ! -z "${INST_ID}" ]; then
+      aws ec2 terminate-instances --instance-ids ${INST_ID} | jq
+  fi
 }
 
 
@@ -45,11 +45,11 @@ remove_A_rec() {
              --filters "Name=instance-state-name,Values=running" "Name=tag:Name,Values=${COMPONENT}" \
              --output text | awk '{print$2}')
 
-    if [ -z "${PVT_ID}" ]; then
-       sed -e "s/IPADDRESS/${PVT_IP}/" -e "s/COMPONENT/${COMPONENT}-dev/" -e "s/ACTION/DELETE/" route53.json >/tmp/record.json
-       aws route53 change-resource-record-sets --hosted-zone-id ${PVT_HOST_ZONE} --change-batch file:///tmp/record.json | jq
+  if [ -z "${PVT_ID}" ]; then
+      sed -e "s/IPADDRESS/${PVT_IP}/" -e "s/COMPONENT/${COMPONENT}-dev/" -e "s/ACTION/DELETE/" route53.json >/tmp/record.json
+      aws route53 change-resource-record-sets --hosted-zone-id ${PVT_HOST_ZONE} --change-batch file:///tmp/record.json | jq
 
-    fi
+  fi
 }
 
 if [ "$1" == "all" ]; then
