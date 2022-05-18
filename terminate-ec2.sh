@@ -7,8 +7,10 @@ fi
 
 COMPONENT="$1"
 
-PVT_HZONE_ID=$(aws route53 list-hosted-zones-by-name \
+PVT_HOST_ZONE=$(aws route53 list-hosted-zones-by-name \
                 --dns-name roboshop.internal | jq '.HostedZone.Id' | sed -e 's/"//g' | sed -e 's/\/hostedzone\// /')
+
+echo 'Private Hosted Zone ID: ' $PVT_HOST_ZONE
 
 terminate_instance() {
 
