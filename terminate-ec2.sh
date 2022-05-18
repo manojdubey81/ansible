@@ -7,8 +7,9 @@ fi
 
 COMPONENT="$1"
 
+VPC_ID=$(aws ec2 describe-vpcs | jq '.Vpcs[].VpcId' | sed -e 's/"//g')
 PVT_HOST_ZONE=$(aws route53 list-hosted-zones-by-name \
-                --dns-name roboshop.internal | jq '.HostedZone.Id' | sed -e 's/"//g' | sed -e 's/\/hostedzone\// /')
+                --dns-name roboshop.internal | jq '.HostedZones[].Id' | sed -e 's/"//g' | sed -e 's/\/hostedzone\// /')
 
 echo "Private Hosted Zone ID= " $PVT_HOST_ZONE
 
