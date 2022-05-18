@@ -3,9 +3,9 @@ Description = Cart Service
 [Service]
 User=roboshop
 #Update REDIS_HOST IP or DNS Name
-Environment=REDIS_HOST=172.31.28.32
+Environment=REDIS_HOST=redis-{{ENV}}.roboshop.internal
 #Update CATALOGUE_URL IP or DNS Name
-Environment=CATALOGUE_URL=172.31.20.181
+Environment=CATALOGUE_URL=catalogue-{{ENV}}.roboshop.internal
 ExecStart=/bin/node /home/roboshop/cart/server.js
 SyslogIdentifier=cart
 

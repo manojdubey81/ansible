@@ -3,9 +3,9 @@ Description = User Service
 [Service]
 User=roboshop
 # Updated REDIS_HOST IP or DNS record
-Environment=REDIS_HOST=redis.roboshop.internal
+Environment=REDIS_HOST=redis-{{ENV}}.roboshop.internal
 # Updated MONGO_URL IP or DNS record
-Environment=MONGO_URL="mongodb://mongodb.roboshop.internal:27017/users"
+Environment=MONGO_URL="mongodb://mongodb-{{ENV}}.roboshop.internal:27017/users"
 ExecStart=/bin/node /home/roboshop/user/server.js
 SyslogIdentifier=user
 
